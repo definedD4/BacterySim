@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BacterySim.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="This">
+    <Ellipse Width="{Binding ElementName=This, Path=Radius}" Height="{Binding ElementName=This, Path=Radius}" Fill="{Binding ElementName=This, Path=Color}"/>
 </UserControl>

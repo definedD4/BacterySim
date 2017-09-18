@@ -35,14 +35,18 @@ namespace BacterySim.Controls
             _world = world;
             _bactery = bactery;
 
-            _body = new Body(world);
-            _body.BodyType = BodyType.Dynamic;
-            _body.UserData = this;
+            _body = new Body(world)
+            {
+                BodyType = BodyType.Dynamic,
+                UserData = this
+            };
 
             var shape = new CircleShape((float)bactery.Radius, 1.0f);
             _fixture = _body.CreateFixture(shape);
 
             InitializeComponent();
+
+            UpdateDisplay();
         }
 
         public Vector Position { get; private set; }
