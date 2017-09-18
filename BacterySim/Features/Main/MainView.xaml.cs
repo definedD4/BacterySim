@@ -23,8 +23,10 @@ namespace BacterySim.Features.Main
         public MainView()
         {
             InitializeComponent();
-
-            this.OneWayBind(ViewModel, vm => vm.Bacteries, v => v.SimulationPlane.BacterySource);
+            this.WhenActivated(d =>
+            {
+                d(this.OneWayBind(ViewModel, vm => vm.Bacteries, v => v.SimulationPlane.BacterySource));
+            });
         }
 
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
