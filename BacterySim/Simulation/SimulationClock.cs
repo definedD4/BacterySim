@@ -34,7 +34,7 @@ namespace BacterySim.Simulation
 
         private void OnTick(object sender, EventArgs e)
         {
-            var elapsed = _stopwatch.Elapsed;
+            var elapsed = TimeSpan.FromMilliseconds(_stopwatch.ElapsedMilliseconds * Timescale);
             _stopwatch.Restart();
 
             Tick?.Invoke(this, new TickEventArgs(elapsed));
@@ -45,6 +45,8 @@ namespace BacterySim.Simulation
             get { return _timer.Interval; }
             set { _timer.Interval = value; }
         }
+
+        public double Timescale { get; set; }
 
         public event EventHandler<TickEventArgs> Tick;
 

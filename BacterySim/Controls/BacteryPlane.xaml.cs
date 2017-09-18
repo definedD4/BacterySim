@@ -48,7 +48,7 @@ namespace BacterySim.Controls
             {
                 var display = body.UserData as BacteryDisplay;
 
-                display.UpdatePosition();
+                display.UpdateDisplay();
             }
         }
     }

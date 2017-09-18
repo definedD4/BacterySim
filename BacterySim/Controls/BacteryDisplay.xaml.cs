@@ -4,6 +4,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace BacterySim.Controls
     /// <summary>
     /// Логика взаимодействия для BacteryDisplay.xaml
     /// </summary>
-    public partial class BacteryDisplay : UserControl
+    public partial class BacteryDisplay : UserControl, INotifyPropertyChanged
     {
         private readonly World _world;
         private readonly Fixture _fixture;
@@ -50,18 +51,22 @@ namespace BacterySim.Controls
 
         public Color Color => _bactery.Color;
 
-        public void UpdatePosition()
+        public void UpdateDisplay()
         {
             var pos = _body.Position;
             Position = new Vector(pos.X, pos.Y);
 
-            SetPosition();
+            this.SetValue(Canvas.LeftProperty, Position.X - Radius);
+            this.SetValue(Canvas.TopProperty, Position.Y - Radius);
+
+            NotifyPropertyChanged(null);
         }
 
-        private void SetPosition()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
         {
-            this.SetValue(Canvas.LeftProperty, Position.X);
-            this.SetValue(Canvas.TopProperty, Position.Y);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
