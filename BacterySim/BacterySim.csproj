@@ -93,6 +93,10 @@
     <Compile Include="Controls\BacteryPlane.xaml.cs">
       <DependentUpon>BacteryPlane.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Main\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Main\MainViewModel.cs" />
     <Compile Include="Simulation\Bactery.cs" />
     <Compile Include="Simulation\SimulationClock.cs" />
   </ItemGroup>
@@ -129,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BacteryPlane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Main\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

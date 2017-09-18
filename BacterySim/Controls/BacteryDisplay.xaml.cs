@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Xna.Framework;
 
 namespace BacterySim.Controls
 {
@@ -32,10 +33,13 @@ namespace BacterySim.Controls
 
         public BacteryDisplay(World world, Bactery bactery)
         {
+            if (world == null) throw new ArgumentNullException(nameof(world));
+            if (bactery == null) throw new ArgumentNullException(nameof(bactery));
+
             _world = world;
             _bactery = bactery;
 
-            _body = new Body(world)
+            _body = new Body(world, new Vector2(200, 200))
             {
                 BodyType = BodyType.Dynamic,
                 UserData = this
@@ -51,9 +55,9 @@ namespace BacterySim.Controls
 
         public Vector Position { get; private set; }
 
-        public double Radius => _bactery.Radius;
+        public double Radius => _bactery.Radius * 100d;
 
-        public Color Color => _bactery.Color;
+        public Brush Fill => new SolidColorBrush(_bactery.Color);
 
         public void UpdateDisplay()
         {

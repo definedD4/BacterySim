@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Xna.Framework;
 
 namespace BacterySim.Controls
 {
@@ -25,20 +26,29 @@ namespace BacterySim.Controls
     {
         private readonly SimulationClock _simulationClock;
         private readonly World _world;
+        private IReactiveCollection<Bactery> _bacterySource;
 
         public BacteryPlane()
         {
             InitializeComponent();
 
-            BacteriesList.ItemsSource = Bacteries.CreateDerivedCollection(
-                bactery => new BacteryDisplay(_world, bactery)
-                );
-
             _simulationClock = new SimulationClock();
             _simulationClock.Tick += (s, e) => Step(e.Elapsed);
+
+            _world = new World(Vector2.Zero);
         }
 
-        public ReactiveList<Bactery> Bacteries { get; } = new ReactiveList<Bactery>();
+        public IReactiveCollection<Bactery> BacterySource
+        {
+            get { return _bacterySource; }
+            set
+            {
+                _bacterySource = value;
+                BacteriesList.ItemsSource = _bacterySource.CreateDerivedCollection(
+                    bactery => new BacteryDisplay(_world, bactery)
+                );
+            }
+        }
 
         private void Step(TimeSpan delta)
         {
@@ -50,6 +60,17 @@ namespace BacterySim.Controls
 
                 display.UpdateDisplay();
             }
+        }
+
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            _simulationClock.Start();
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _simulationClock.Stop();
         }
     }
 }

@@ -10,8 +10,8 @@ namespace BacterySim.Simulation
 {
     public class Bactery
     {
-        public double Radius => 1.0d;
+        public double Radius { get; set; } = 1.0d;
 
-        public Color Color => Colors.Orange;
+        public Color Color { get; set; } = Colors.Red;
     }
 }
