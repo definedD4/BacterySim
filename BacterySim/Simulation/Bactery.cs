@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace BacterySim.SimulationPlane
+namespace BacterySim.Simulation
 {
     public class Bactery
     {
-        public Point Position { get; set; }
-
-        public double Size => 1.0d;
+        public double Radius => 1.0d;
 
         public Color Color => Colors.Orange;
     }
