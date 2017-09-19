@@ -46,7 +46,7 @@ namespace BacterySim.Simulation
             set { _timer.Interval = value; }
         }
 
-        public double Timescale { get; set; }
+        public double Timescale { get; set; } = 1d;
 
         public event EventHandler<TickEventArgs> Tick;
 

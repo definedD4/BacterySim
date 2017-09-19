@@ -97,8 +97,11 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Main\MainViewModel.cs" />
+    <Compile Include="GlobalRandom.cs" />
     <Compile Include="Simulation\Bactery.cs" />
+    <Compile Include="Simulation\BacteryPhysicalProxy.cs" />
     <Compile Include="Simulation\SimulationClock.cs" />
+    <Compile Include="Simulation\SimulationContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

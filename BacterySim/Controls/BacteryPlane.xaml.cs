@@ -1,65 +1,36 @@
-﻿using BacterySim.Simulation;
-using FarseerPhysics.Dynamics;
-using ReactiveUI;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using BacterySim.Simulation;
+using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
+using ReactiveUI;
 
 namespace BacterySim.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для BacteryPlane.xaml
+    ///     Логика взаимодействия для BacteryPlane.xaml
     /// </summary>
     public partial class BacteryPlane : UserControl
     {
-        private readonly SimulationClock _simulationClock;
-        private readonly World _world;
-        private IReactiveCollection<Bactery> _bacterySource;
+        private IReactiveCollection<BacteryPhysicalProxy> _bacterySource;
 
-        public BacteryPlane()
+        public IReactiveCollection<BacteryPhysicalProxy> BacterySource
         {
-            InitializeComponent();
-
-            _simulationClock = new SimulationClock();
-            _simulationClock.Tick += (s, e) => Step(e.Elapsed);
-
-            _world = new World(Vector2.Zero);
-        }
-
-        public IReactiveCollection<Bactery> BacterySource
-        {
-            get =>   _bacterySource;
+            get => _bacterySource;
             set
             {
                 _bacterySource = value;
                 BacteriesList.ItemsSource = _bacterySource.CreateDerivedCollection(
-                    bactery => new BacteryDisplay(_world, bactery)
+                    bactery => new BacteryDisplay(bactery)
                 );
             }
         }
 
-        private void Step(TimeSpan delta)
+        public BacteryPlane()
         {
-            _world.Step((float)delta.TotalMilliseconds);
-
-            foreach(var body in _world.BodyList)
-            {
-                var display = body.UserData as BacteryDisplay;
-
-                display.UpdateDisplay();
-            }
-        }
-
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            _simulationClock.Start();
-        }
-
-        private void OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            _simulationClock.Stop();
+            InitializeComponent();
         }
     }
 }

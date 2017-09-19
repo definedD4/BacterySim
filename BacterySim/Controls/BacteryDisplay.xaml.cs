@@ -26,34 +26,21 @@ namespace BacterySim.Controls
     /// </summary>
     public partial class BacteryDisplay : UserControl, INotifyPropertyChanged
     {
-        private readonly World _world;
-        private readonly Fixture _fixture;
-        private readonly Body _body;
-        private readonly Bactery _bactery;
+        private readonly BacteryPhysicalProxy _bactery;
 
-        public BacteryDisplay(World world, Bactery bactery)
+        public BacteryDisplay(BacteryPhysicalProxy bactery)
         {
-            if (world == null) throw new ArgumentNullException(nameof(world));
             if (bactery == null) throw new ArgumentNullException(nameof(bactery));
 
-            _world = world;
             _bactery = bactery;
-
-            _body = new Body(world, new Vector2(200, 200))
-            {
-                BodyType = BodyType.Dynamic,
-                UserData = this
-            };
-
-            var shape = new CircleShape((float)bactery.Radius, 1.0f);
-            _fixture = _body.CreateFixture(shape);
+            _bactery.StateChanged += (s, e) => UpdateDisplay();
 
             InitializeComponent();
 
             UpdateDisplay();
         }
 
-        public Vector Position { get; private set; }
+        public Vector Position => _bactery.Position * 100d;
 
         public double Radius => _bactery.Radius * 100d;
 
@@ -61,14 +48,13 @@ namespace BacterySim.Controls
 
         public void UpdateDisplay()
         {
-            var pos = _body.Position;
-            Position = new Vector(pos.X, pos.Y);
-
             this.SetValue(Canvas.LeftProperty, Position.X - Radius);
             this.SetValue(Canvas.TopProperty, Position.Y - Radius);
 
             NotifyPropertyChanged(null);
         }
+
+        #region INotifyPropertyChanged implementation
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -76,5 +62,7 @@ namespace BacterySim.Controls
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

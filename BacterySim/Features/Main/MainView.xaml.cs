@@ -25,7 +25,8 @@ namespace BacterySim.Features.Main
             InitializeComponent();
             this.WhenActivated(d =>
             {
-                d(this.OneWayBind(ViewModel, vm => vm.Bacteries, v => v.SimulationPlane.BacterySource));
+                d(this.OneWayBind(ViewModel, vm => vm.Context.Bacteries, v => v.SimulationPlane.BacterySource));
+                d(ViewModel.StartSimulation.Execute().Subscribe());
             });
         }
 
@@ -34,14 +35,14 @@ namespace BacterySim.Features.Main
 
         public MainViewModel ViewModel
         {
-            get { return (MainViewModel) GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
+            get => (MainViewModel) GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
         }
 
         object IViewFor.ViewModel
         {
-            get { return ViewModel; }
-            set { ViewModel = (MainViewModel)value; }
+            get => ViewModel;
+            set => ViewModel = (MainViewModel)value;
         }
     }
 }
