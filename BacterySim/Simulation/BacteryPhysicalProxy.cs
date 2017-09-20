@@ -23,7 +23,7 @@ namespace BacterySim.Simulation
 
         public double Radius => Bactery.Size;
 
-        public Color Color => Color.Multiply(Colors.Red, (float)Math.Max(1.0d, Bactery.Energy / 10d));
+        public Color Color => Color.Multiply(Colors.Red, (float)Math.Min(1.0d, Bactery.Energy / 10d));
 
         public BacteryPhysicalProxy(Bactery bactery, SimulationContext context, Vector position)
         {
@@ -55,6 +55,7 @@ namespace BacterySim.Simulation
         public void Split()
         {
             var bacteries = Bactery.Split();
+            _context.World.RemoveBody(_body);
             _context.OnSplit(this, bacteries.Item1, bacteries.Item2);
         }
 

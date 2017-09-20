@@ -9,15 +9,15 @@ namespace BacterySim.Simulation
 
         public double Energy { get; set; } = 0.0d;
 
-        public double FoodAbsorbtionRatePerSize { get; set; } = 0.01d;
+        public double FoodAbsorbtionRatePerSize { get; set; } = 0.05d;
 
         public double EnergyUsageRatePerSize { get; set; } = 0.005d;
 
         public void Update(TimeSpan delta, SimulationProperties properties)
         {
-            double sec = delta.Seconds;
+            double sec = delta.TotalSeconds;
 
-            double deltaFood = Math.Max(FoodAbsorbtionRatePerSize * Size * properties.Food * sec, properties.Food);
+            double deltaFood = Math.Min(FoodAbsorbtionRatePerSize * Size * properties.Food * sec, properties.Food);
 
             Energy += deltaFood;
             Energy -= EnergyUsageRatePerSize * Size;

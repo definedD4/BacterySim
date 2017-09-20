@@ -5,7 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BacterySim.Features.Main"
         xmlns:controls="clr-namespace:BacterySim.Controls"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="MainView" Height="300" Width="300">
-    <controls:BacteryPlane x:Name="SimulationPlane"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="130"/>
+        </Grid.RowDefinitions>
+        <controls:BacteryPlane x:Name="SimulationPlane"/>
+        <oxy:Plot Grid.Row="1">
+            <oxy:Plot.Series>
+                <oxy:LineSeries x:Name="FoodPlot"/>
+            </oxy:Plot.Series>
+        </oxy:Plot>
+    </Grid>
 </Window>

@@ -27,6 +27,7 @@ namespace BacterySim.Features.Main
             {
                 d(this.OneWayBind(ViewModel, vm => vm.Context.Bacteries, v => v.SimulationPlane.BacterySource));
                 d(ViewModel.StartSimulation.Execute().Subscribe());
+                d(this.OneWayBind(ViewModel, vm => vm.FoodPlot, v => v.FoodPlot.ItemsSource));
             });
         }
 

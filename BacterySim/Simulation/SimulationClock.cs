@@ -37,6 +37,8 @@ namespace BacterySim.Simulation
             var elapsed = TimeSpan.FromMilliseconds(_stopwatch.ElapsedMilliseconds * Timescale);
             _stopwatch.Restart();
 
+            Time += elapsed;
+
             Tick?.Invoke(this, new TickEventArgs(elapsed));
         }
 
@@ -48,10 +50,13 @@ namespace BacterySim.Simulation
 
         public double Timescale { get; set; } = 1d;
 
+        public TimeSpan Time { get; private set; }
+
         public event EventHandler<TickEventArgs> Tick;
 
         public void Start()
         {
+            Time = TimeSpan.Zero;
             _timer.Start();
             _stopwatch.Start();
         }

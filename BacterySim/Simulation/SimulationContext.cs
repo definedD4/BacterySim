@@ -22,6 +22,8 @@ namespace BacterySim.Simulation
 
         public ReactiveList<BacteryPhysicalProxy> Bacteries { get; } = new ReactiveList<BacteryPhysicalProxy>();
 
+        public TimeSpan Time => _simulationClock.Time;
+
         public SimulationContext()
         {
             _simulationClock = new SimulationClock();
@@ -66,6 +68,8 @@ namespace BacterySim.Simulation
                     proxy.Split();
                 }
             }
+
+            PropertiesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void Start()
@@ -90,5 +94,7 @@ namespace BacterySim.Simulation
             Bacteries.Add(new BacteryPhysicalProxy(newBactery1, this, pos1));
             Bacteries.Add(new BacteryPhysicalProxy(newBactery2, this, pos2));
         }
+
+        public event EventHandler PropertiesChanged;
     }
 }
