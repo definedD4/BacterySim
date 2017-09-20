@@ -102,6 +102,7 @@
     <Compile Include="Simulation\BacteryPhysicalProxy.cs" />
     <Compile Include="Simulation\SimulationClock.cs" />
     <Compile Include="Simulation\SimulationContext.cs" />
+    <Compile Include="Simulation\SimulationProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

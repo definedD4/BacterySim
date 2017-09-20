@@ -13,23 +13,24 @@ namespace BacterySim.Simulation
 {
     public class BacteryPhysicalProxy
     {
-        private readonly Bactery _bactery;
         private readonly SimulationContext _context;
         private readonly Fixture _fixture;
         private readonly Body _body;
 
+        public Bactery Bactery { get; }
+
         public Vector Position { get; private set; }
 
-        public double Radius => _bactery.Radius;
+        public double Radius => Bactery.Size;
 
-        public Color Color => _bactery.Color;
+        public Color Color => Color.Multiply(Colors.Red, (float)Math.Max(1.0d, Bactery.Energy / 10d));
 
         public BacteryPhysicalProxy(Bactery bactery, SimulationContext context, Vector position)
         {
             if (bactery == null) throw new ArgumentNullException(nameof(bactery));
             if (context == null) throw new ArgumentNullException(nameof(context));
 
-            _bactery = bactery;
+            Bactery = bactery;
             _context = context;
             Position = position;
 
@@ -39,11 +40,11 @@ namespace BacterySim.Simulation
                 UserData = this
             };
 
-            var shape = new CircleShape((float)bactery.Radius, 1.0f);
+            var shape = new CircleShape((float)bactery.Size, 1.0f);
             _fixture = _body.CreateFixture(shape);
         }
 
-        public void Update()
+        public void UpdatePosition()
         {
             var pos = _body.Position;
             Position = new Vector(pos.X, pos.Y);
@@ -53,7 +54,7 @@ namespace BacterySim.Simulation
 
         public void Split()
         {
-            var bacteries = _bactery.Split();
+            var bacteries = Bactery.Split();
             _context.OnSplit(this, bacteries.Item1, bacteries.Item2);
         }
 

@@ -5,15 +5,33 @@ namespace BacterySim.Simulation
 {
     public class Bactery
     {
-        public double Radius { get; set; } = 1.0d;
+        public double Size { get; set; } = 1.0d;
 
-        public Color Color { get; set; } = Colors.Red;
+        public double Energy { get; set; } = 0.0d;
+
+        public double FoodAbsorbtionRatePerSize { get; set; } = 0.01d;
+
+        public double EnergyUsageRatePerSize { get; set; } = 0.005d;
+
+        public void Update(TimeSpan delta, SimulationProperties properties)
+        {
+            double sec = delta.Seconds;
+
+            double deltaFood = Math.Max(FoodAbsorbtionRatePerSize * Size * properties.Food * sec, properties.Food);
+
+            Energy += deltaFood;
+            Energy -= EnergyUsageRatePerSize * Size;
+
+            properties.Food -= deltaFood;
+        }
+
+        public bool CanSplit => Energy > Size * 5d;
 
         public Tuple<Bactery, Bactery> Split()
         {
             return Tuple.Create(
-                new Bactery {Radius = NewRadius(Radius), Color = NewColor(Color)},
-                new Bactery {Radius = NewRadius(Radius), Color = NewColor(Color)}
+                new Bactery {Size = NewRadius(Size), Energy = NewEnergy(Energy)},
+                new Bactery {Size = NewRadius(Size), Energy = NewEnergy(Energy) }
             );
         }
 
@@ -22,15 +40,9 @@ namespace BacterySim.Simulation
             return oldRadius + GlobalRandom.NextDouble() * 0.1d;
         }
 
-        private Color NewColor(Color oldColor)
+        private double NewEnergy(double oldEnergy)
         {
-            return Color.Add(oldColor,
-                Color.Multiply(
-                    Color.FromScRgb(1.0f,
-                        (float) GlobalRandom.NextDouble(),
-                        (float) GlobalRandom.NextDouble(),
-                        (float) GlobalRandom.NextDouble()),
-                    0.3f));
+            return oldEnergy / 2.0d - Size * 0.05d;
         }
     }
 }

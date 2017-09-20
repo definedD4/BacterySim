@@ -21,7 +21,7 @@ namespace BacterySim.Features.Main
 
             Context.Bacteries.AddRange(new[]
             {
-                new Bactery {Radius = 1.0d, Color = Colors.Yellow}
+                new Bactery {Size = 1.0d}
             }.Select(b => new BacteryPhysicalProxy(b, Context, new Vector(5, 5))));
         }
     }
