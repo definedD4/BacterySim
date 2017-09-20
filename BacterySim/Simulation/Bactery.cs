@@ -37,7 +37,7 @@ namespace BacterySim.Simulation
 
         private double NewRadius(double oldRadius)
         {
-            return oldRadius + GlobalRandom.NextDouble() * 0.1d;
+            return oldRadius + GlobalRandom.NextDouble() * 0.7d;
         }
 
         private double NewEnergy(double oldEnergy)

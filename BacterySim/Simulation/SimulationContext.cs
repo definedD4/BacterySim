@@ -33,8 +33,8 @@ namespace BacterySim.Simulation
 
             Properties = new SimulationProperties()
             {
-                Food = 10,
-                FoodRate = 0.1d,
+                Food = 50,
+                FoodRate = 0.3d,
             };
         }
 
