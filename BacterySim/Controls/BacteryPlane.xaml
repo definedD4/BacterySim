@@ -11,7 +11,7 @@
     <ItemsControl x:Name="BacteriesList">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas>
+                <Canvas Background="White">
                     <i:Interaction.Behaviors>
                         <behaviors:ZoomAndPanBehavior/>
                     </i:Interaction.Behaviors>

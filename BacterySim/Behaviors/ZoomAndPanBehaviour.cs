@@ -12,19 +12,29 @@ namespace BacterySim.Behaviors
 {
     public class ZoomAndPanBehavior : Behavior<Canvas>
     {
+        private double scaleFactor = 0.01;
+
         private bool _dragging = false;
         private Point _startPoint;
         private double _startX, _startY;
         private TranslateTransform _translateTransform;
+        private ScaleTransform _scaleTransform;
+        private double scale = 0;
 
         protected override void OnAttached()
         {
             _translateTransform = new TranslateTransform();
-            AssociatedObject.RenderTransform = _translateTransform;
+            _scaleTransform = new ScaleTransform();
+
+            var transformGroup = new TransformGroup();
+            transformGroup.Children.Add(_scaleTransform);
+            transformGroup.Children.Add(_translateTransform);
+            AssociatedObject.RenderTransform = transformGroup;
 
             AssociatedObject.MouseDown += MouseDown;
             AssociatedObject.MouseUp += MouseUp;
             AssociatedObject.MouseMove += MouseMove;
+            AssociatedObject.MouseWheel += MouseWheel;
         }
 
         protected override void OnDetaching()
@@ -32,6 +42,7 @@ namespace BacterySim.Behaviors
             AssociatedObject.MouseDown -= MouseDown;
             AssociatedObject.MouseUp -= MouseUp;
             AssociatedObject.MouseMove -= MouseMove;
+            AssociatedObject.MouseWheel -= MouseWheel;
         }
 
         private void MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -43,15 +54,12 @@ namespace BacterySim.Behaviors
 
                 _translateTransform.X = _startX + offset.X;
                 _translateTransform.Y = _startY + offset.Y;
-
-                Console.WriteLine($"Pan offset {offset}");
             }
         }
 
         private void MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             _dragging = false;
-            Console.WriteLine("Pan stopped");
         }
 
         private void MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -60,7 +68,15 @@ namespace BacterySim.Behaviors
             _startPoint = e.GetPosition(App.Current.MainWindow);
             _startX = _translateTransform.X;
             _startY = _translateTransform.Y;
-            Console.WriteLine($"Pan started on {_startPoint}");
+        }
+
+        private void MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            scale += e.Delta * scaleFactor;
+            Console.WriteLine($"Scale {scale}");
+            _scaleTransform.ScaleX = Math.Pow(2, scale);
+            _scaleTransform.ScaleY = Math.Pow(2, scale);
         }
     }
 }
+
