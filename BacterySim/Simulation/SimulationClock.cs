@@ -23,6 +23,10 @@ namespace BacterySim.Simulation
         private readonly DispatcherTimer _timer;
         private readonly Stopwatch _stopwatch;
 
+        // test
+        private TimeSpan totalTime = TimeSpan.Zero;
+        private int ticks = 0;
+
         public SimulationClock()
         {
             _timer = new DispatcherTimer();
@@ -38,6 +42,16 @@ namespace BacterySim.Simulation
             _stopwatch.Restart();
 
             Time += elapsed;
+
+            totalTime += elapsed;
+            ticks++;
+            if(ticks % 100 == 0)
+            {
+                Console.WriteLine($"Avg frame time: {totalTime.TotalMilliseconds / ticks}");
+                totalTime = TimeSpan.Zero;
+                ticks = 0;
+            }
+
 
             Tick?.Invoke(this, new TickEventArgs(elapsed));
         }

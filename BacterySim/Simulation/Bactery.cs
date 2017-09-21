@@ -13,6 +13,8 @@ namespace BacterySim.Simulation
 
         public double EnergyUsageRatePerSize { get; set; } = 0.005d;
 
+        public IBacteryWatch Watch { get; set; }
+
         public void Update(TimeSpan delta, SimulationProperties properties)
         {
             double sec = delta.TotalSeconds;

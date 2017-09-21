@@ -25,7 +25,7 @@ namespace BacterySim.Features.Main
             InitializeComponent();
             this.WhenActivated(d =>
             {
-                d(this.OneWayBind(ViewModel, vm => vm.Context.Bacteries, v => v.SimulationPlane.BacterySource));
+                d(this.OneWayBind(ViewModel, vm => vm.Context, v => v.SimulationPlane.SimulationContext));
                 d(ViewModel.StartSimulation.Execute().Subscribe());
                 d(this.OneWayBind(ViewModel, vm => vm.FoodPlot, v => v.FoodPlot.ItemsSource));
             });

@@ -31,7 +31,7 @@ namespace BacterySim.Features.Main
             Context.Bacteries.AddRange(new[]
             {
                 new Bactery {Size = 1.0d}
-            }.Select(b => new BacteryPhysicalProxy(b, Context, new Vector(5, 5))));
+            });
         }
     }
 }

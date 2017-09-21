@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace BacterySim.Behaviors
 {
-    public class ZoomAndPanBehavior : Behavior<Canvas>
+    public class ZoomAndPanBehavior : Behavior<UIElement>
     {
         private double scaleFactor = 0.01;
 

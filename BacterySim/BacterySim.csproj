@@ -100,11 +100,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ZoomAndPanBehaviour.cs" />
-    <Compile Include="Controls\BacteryDisplay.xaml.cs">
-      <DependentUpon>BacteryDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BacteryPlane.xaml.cs">
-      <DependentUpon>BacteryPlane.xaml</DependentUpon>
+    <Compile Include="Controls\PhysicalBacteryDisplay.cs" />
+    <Compile Include="Controls\SimulationPlane.xaml.cs">
+      <DependentUpon>SimulationPlane.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -112,7 +110,9 @@
     <Compile Include="Features\Main\MainViewModel.cs" />
     <Compile Include="GlobalRandom.cs" />
     <Compile Include="Simulation\Bactery.cs" />
-    <Compile Include="Simulation\BacteryPhysicalProxy.cs" />
+    <Compile Include="Simulation\IBacteryWatch.cs" />
+    <Compile Include="Simulation\Physical\BacteryPhysicalProxy.cs" />
+    <Compile Include="Simulation\Physical\PhysicalSimulationContext.cs" />
     <Compile Include="Simulation\SimulationClock.cs" />
     <Compile Include="Simulation\SimulationContext.cs" />
     <Compile Include="Simulation\SimulationProperties.cs" />
@@ -145,11 +145,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\BacteryDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\BacteryPlane.xaml">
+    <Page Include="Controls\SimulationPlane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,6 +157,7 @@
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.0.7\build\netstandard1.4\Fody.targets" Condition="Exists('..\packages\Fody.2.0.7\build\netstandard1.4\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

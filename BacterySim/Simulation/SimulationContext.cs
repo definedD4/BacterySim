@@ -9,6 +9,7 @@ using BacterySim.Controls;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using ReactiveUI;
+using BacterySim.Simulation.Physical;
 
 namespace BacterySim.Simulation
 {
@@ -18,56 +19,46 @@ namespace BacterySim.Simulation
 
         public SimulationProperties Properties { get; }
 
-        public World World { get; }
-
-        public ReactiveList<BacteryPhysicalProxy> Bacteries { get; } = new ReactiveList<BacteryPhysicalProxy>();
+        public ReactiveList<Bactery> Bacteries { get; } = new ReactiveList<Bactery>();
 
         public TimeSpan Time => _simulationClock.Time;
 
         public SimulationContext()
         {
             _simulationClock = new SimulationClock();
-            _simulationClock.Tick += (s, e) => Step(e.Elapsed);
-
-            World = new World(Vector2.Zero);
+            _simulationClock.Tick += (s, e) => Step(e.Elapsed);          
 
             Properties = new SimulationProperties()
             {
                 Food = 50,
-                FoodRate = 0.3d,
+                FoodRate = 10d,
             };
         }
 
         private void Step(TimeSpan delta)
         {
-            World.Step((float)delta.TotalMilliseconds);
-
             Properties.Step(delta);
+
+            var toAdd = new List<Bactery>();
+            var toRemove = new List<Bactery>();
 
             foreach(var bactery in Bacteries)
             {
-                bactery.Bactery.Update(delta, Properties);
-            }
+                bactery.Update(delta, Properties);
 
-            foreach (var body in World.BodyList)
-            {
-                var proxy = body.UserData as BacteryPhysicalProxy;
-
-                Debug.Assert(proxy != null, "BacteryPlane: display != null");
-
-                proxy.UpdatePosition();
-
-                if (proxy.Bactery.Energy <= 0)
+                if(bactery.CanSplit)
                 {
-                    World.RemoveBody(body);
-                    Bacteries.Remove(proxy);
-                }
-                
-                if(proxy.Bactery.CanSplit)
-                {
-                    proxy.Split();
+                    var split = bactery.Split();
+                    toRemove.Add(bactery);
+                    toAdd.Add(split.Item1);
+                    toAdd.Add(split.Item2);
+
+                    bactery.Watch?.OnSplit(split.Item1, split.Item2);
                 }
             }
+
+            toAdd.ForEach(Bacteries.Add);
+            toRemove.ForEach(b => Bacteries.Remove(b));
 
             PropertiesChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -80,19 +71,6 @@ namespace BacterySim.Simulation
         public void Stop()
         {
             _simulationClock.Stop();
-        }
-
-        public void OnSplit(BacteryPhysicalProxy oldProxy, Bactery newBactery1, Bactery newBactery2)
-        {
-            Bacteries.Remove(oldProxy);
-
-            var direction = GlobalRandom.NextDirection();
-
-            var pos1 = oldProxy.Position + direction * newBactery1.Size;
-            var pos2 = oldProxy.Position + direction * newBactery2.Size;
-
-            Bacteries.Add(new BacteryPhysicalProxy(newBactery1, this, pos1));
-            Bacteries.Add(new BacteryPhysicalProxy(newBactery2, this, pos2));
         }
 
         public event EventHandler PropertiesChanged;

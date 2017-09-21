@@ -13,7 +13,7 @@
             <RowDefinition/>
             <RowDefinition Height="130"/>
         </Grid.RowDefinitions>
-        <controls:BacteryPlane x:Name="SimulationPlane"/>
+        <controls:SimulationPlane x:Name="SimulationPlane"/>
         <oxy:Plot Grid.Row="1">
             <oxy:Plot.Series>
                 <oxy:LineSeries x:Name="FoodPlot"/>
