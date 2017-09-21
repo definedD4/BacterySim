@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 
-namespace BacterySim.Behavours
+namespace BacterySim.Behaviors
 {
     public class ZoomAndPanBehavior : Behavior<Canvas>
     {
@@ -38,25 +38,29 @@ namespace BacterySim.Behavours
         {
             if(_dragging)
             {
-                var mousePos = e.GetPosition(AssociatedObject);
+                var mousePos = e.GetPosition(App.Current.MainWindow);
                 var offset = mousePos - _startPoint;
 
                 _translateTransform.X = _startX + offset.X;
                 _translateTransform.Y = _startY + offset.Y;
+
+                Console.WriteLine($"Pan offset {offset}");
             }
         }
 
         private void MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             _dragging = false;
+            Console.WriteLine("Pan stopped");
         }
 
         private void MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             _dragging = true;
-            _startPoint = e.GetPosition(AssociatedObject);
+            _startPoint = e.GetPosition(App.Current.MainWindow);
             _startX = _translateTransform.X;
             _startY = _translateTransform.Y;
+            Console.WriteLine($"Pan started on {_startPoint}");
         }
     }
 }

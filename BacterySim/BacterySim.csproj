@@ -99,7 +99,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Behavours\ZoomAndPanBehaviour.cs" />
+    <Compile Include="Behaviors\ZoomAndPanBehaviour.cs" />
     <Compile Include="Controls\BacteryDisplay.xaml.cs">
       <DependentUpon>BacteryDisplay.xaml</DependentUpon>
     </Compile>
